@@ -1,0 +1,104 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+package fast_test
+
+import (
+	"reflect"
+	"testing"
+
+	"github.com/iainjreid/go-fast"
+)
+
+type TestNode struct {
+	name        string
+	children    []*TestNode
+	annotations []*TestAnnotation
+}
+
+type TestAnnotation struct {
+	key   string
+	value string
+}
+
+func (t *TestNode) Append(node *TestNode) {
+	t.children = append(t.children, node)
+}
+
+func (t *TestNode) Annotate(annotation *TestAnnotation) {
+	t.annotations = append(t.annotations, annotation)
+}
+
+var parent = fast.New(func(string) *TestNode {
+	return &TestNode{
+		name: "parent",
+	}
+})
+
+func TestAppend(t *testing.T) {
+	var subject = parent.Append(fast.New(func(string) *TestNode {
+		return &TestNode{
+			name: "child",
+		}
+	}))
+
+	var expected = &TestNode{
+		name: "parent",
+		children: []*TestNode{
+			{
+				name: "child",
+			},
+		},
+	}
+
+	if !reflect.DeepEqual(subject.Build("68yvwz"), expected) {
+		t.Fatal("result should be equal to expected output")
+	}
+}
+
+func TestAnnotate(t *testing.T) {
+	var subject = parent.Annotate(&TestAnnotation{
+		key:   "test_key",
+		value: "test_value",
+	})
+
+	var expected = &TestNode{
+		name: "parent",
+		annotations: []*TestAnnotation{
+			{
+				key:   "test_key",
+				value: "test_value",
+			},
+		},
+	}
+
+	if !reflect.DeepEqual(subject.Build("q708uc"), expected) {
+		t.Fatal("result should be equal to expected output")
+	}
+}
+
+func TestLift(t *testing.T) {
+	var subject = parent.Lift(func(i string) *fast.Builder[string, *TestNode, *TestAnnotation] {
+		return fast.New(func(str string) *TestNode {
+			return &TestNode{
+				name: str,
+			}
+		})
+	})
+
+	var expected = &TestNode{
+		name: "parent",
+		children: []*TestNode{
+			{
+				name: "x8azmu",
+			},
+		},
+	}
+
+	if !reflect.DeepEqual(subject.Build("x8azmu"), expected) {
+		t.Fatal("result should be equal to expected output")
+	}
+}
