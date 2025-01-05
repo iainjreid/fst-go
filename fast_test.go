@@ -38,6 +38,8 @@ var parent = fast.New(func(string) *TestNode {
 	}
 })
 
+// TestAppend calls [Builder.Append], to ensure that it correctly adds a new
+// child to the parent node.
 func TestAppend(t *testing.T) {
 	var subject = parent.Append(fast.New(func(string) *TestNode {
 		return &TestNode{
@@ -59,6 +61,8 @@ func TestAppend(t *testing.T) {
 	}
 }
 
+// TestAnnotate calls [Buidler.Annotate], to ensure that it correctly adds an
+// annotation to the parent node.
 func TestAnnotate(t *testing.T) {
 	var subject = parent.Annotate(&TestAnnotation{
 		key:   "test_key",
@@ -80,6 +84,8 @@ func TestAnnotate(t *testing.T) {
 	}
 }
 
+// TestLift calls [Builder.Lift], to ensure that dynamic nodes can be added
+// using the provided build context.
 func TestLift(t *testing.T) {
 	var subject = parent.Lift(func(i string) *fast.Builder[string, *TestNode, *TestAnnotation] {
 		return fast.New(func(str string) *TestNode {
