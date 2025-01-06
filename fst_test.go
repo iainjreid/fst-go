@@ -4,13 +4,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package fast_test
+package fst_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/iainjreid/go-fast"
+	"github.com/iainjreid/go-fst"
 )
 
 type TestNode struct {
@@ -32,7 +32,7 @@ func (t *TestNode) Annotate(annotation *TestAnnotation) {
 	t.annotations = append(t.annotations, annotation)
 }
 
-var parent = fast.New(func(string) *TestNode {
+var parent = fst.New(func(string) *TestNode {
 	return &TestNode{
 		name: "parent",
 	}
@@ -41,7 +41,7 @@ var parent = fast.New(func(string) *TestNode {
 // TestAppend calls [Builder.Append], to ensure that it correctly adds a new
 // child to the parent node.
 func TestAppend(t *testing.T) {
-	var subject = parent.Append(fast.New(func(string) *TestNode {
+	var subject = parent.Append(fst.New(func(string) *TestNode {
 		return &TestNode{
 			name: "child",
 		}
@@ -87,8 +87,8 @@ func TestAnnotate(t *testing.T) {
 // TestLift calls [Builder.Lift], to ensure that dynamic nodes can be added
 // using the provided build context.
 func TestLift(t *testing.T) {
-	var subject = parent.Lift(func(i string) *fast.Builder[string, *TestNode, *TestAnnotation] {
-		return fast.New(func(str string) *TestNode {
+	var subject = parent.Lift(func(i string) *fst.Builder[string, *TestNode, *TestAnnotation] {
+		return fst.New(func(str string) *TestNode {
 			return &TestNode{
 				name: str,
 			}

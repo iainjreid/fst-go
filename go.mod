@@ -1,3 +1,3 @@
-module github.com/iainjreid/go-fast
+module github.com/iainjreid/fst-go
 
 go 1.23.3

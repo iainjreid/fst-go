@@ -1,6 +1,6 @@
-# fAST
+# FST
 
-An abstract syntax tree factory built using functional principles.
+A syntax tree factory built using functional principles.
 
 ## License
 
