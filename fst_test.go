@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/iainjreid/go-fst"
+	"github.com/iainjreid/fst-go"
 )
 
 type TestNode struct {
